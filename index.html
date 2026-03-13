@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title> Tic Tac Toe</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style type="text/css">
+        body {
+            background: linear-gradient(0deg, rgba(2, 0, 36, 0.76) 0%, rgba(116, 116, 181, 0.78) 35%, rgba(163, 233, 247, 0.88) 100%);
+        }
+
+        .container {
+            grid-template-columns: auto auto auto;
+            border-radius: 5px;
+            display: grid;
+            flex-direction: row;
+            align-items: flex-start;
+            border: 500px none #1db4fad4;
+            border-collapse: collapse;
+        }
+
+        .container_001 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .button {
+            background-color: #22282cb4;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            border-radius: 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            position: relative;
+        }
+
+        .box:hover {
+            background: linear-gradient(180deg, rgba(210, 123, 247, 0.35) 10%, rgba(252, 192, 71, 0.35) 50%);
+        }
+
+        .box h3 {
+            font-size: 24px;
+            color: #3545C5;
+            font-family: Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
+        }
+
+        .box {
+            border: 1px solid #fafafad4;
+            max-width: 250px;
+            width: 100%;
+            border-radius: 20%;
+            text-align: center;
+            display: inline-block;
+            min-height: 250px;
+            vertical-align: top;
+            margin: 15px;
+            padding: 10px;
+            font-size: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        h1 {
+            font-family: Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
+            color: rgba(0, 11, 46, 0.793);
+            text-align: center;
+        }
+
+        #card001,
+        #card002,
+        #card003,
+        #card004,
+        #card005,
+        #card006,
+        #card007,
+        #card008,
+        #card009 {
+            font-family: Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
+            color: rgba(0, 11, 46, 0.793);
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <p style="text-align: center; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+        This is The
+    </p>
+    <h1 style="text-align: center; font: 3.6em courier;">Tic Tac Toe Game</h1>
+    <div class="container-002" id="x-turn"
+        style="border:1px white dashed; font-size:38px; font-family:courier; text-align:center;">
+        X Turn to start
+    </div>
+
+    <!-- This container will hold the 9 squares -->
+    <div class="container">
+        <!-- script will create card_0 ... card_8 here -->
+    </div>
+
+    <div class="container_001">
+        <div id="button_1" class="button_1" value="XsTurn" onclick="dosomething_1()">
+            <button onclick="alert('Should We Get Started?')"> X's Turn Start</button>
+        </div>
+        <div id="button_2" class="button_2" value="OsTurn" onclick="dosomething_2()">
+            <button onclick="alert('Please Take Your Turn.')">O's turn</button>
+        </div>
+        <div class="button">
+            <form action="https://en.wikipedia.org/wiki/Tic-tac-toe" method="get" target="_blank">
+                <button type="submit">Link Info Page</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    // number of squares on the board
+    const NUM_SQUARES = 9;
+
+    // track whose turn it is
+    let currentPlayer = "X";
+
+    // array representing the board: "X", "O", or ""
+    let board = Array(NUM_SQUARES).fill("");
+
+    // all possible winning lines, using indexes 0..8
+    const winConditions = [
+        [0, 1, 2], // top row
+        [3, 4, 5], // middle row
+        [6, 7, 8], // bottom row
+        [0, 3, 6], // left column
+        [1, 4, 7], // middle column
+        [2, 5, 8], // right column
+        [0, 4, 8], // diagonal top-left to bottom-right
+        [2, 4, 6]  // diagonal top-right to bottom-left
+    ];
+
+    // randomly choose a player to start (like you had before)
+    if (Math.random() < 0.5) {
+        currentPlayer = "X";
+    } else {
+        currentPlayer = "O";
+    }
+
+    window.onload = function () {
+        // container where we add the 9 squares
+        const container = document.querySelector(".container");
+        // message element at the top
+        const message = document.getElementById("x-turn");
+        // Start / Restart button
+        const StartGame = document.getElementById("Start Game");
+        // your existing "X's Turn Start" div
+        const cardClick = document.getElementById("button_1");
+
+        message.innerText = currentPlayer + " Turn to start";
+
+        // create 9 <div> elements with class "box" and ids card_0 ... card_8
+        for (let i = 0; i < NUM_SQUARES; i++) {
+            const id = "card_" + i;
+            const cards = document.createElement("div");
+            cards.className = "box";
+            cards.id = id;
+            // store index so we know which board position this is
+            cards.dataset.index = i;
+
+            // click handler for each square
+            cards.addEventListener("click", onCardClick);
+
+            container.appendChild(cards);
+        }
+
+        // Start / Restart button uses your function name StartGameReset
+        if (StartGame) {
+            StartGame.addEventListener("click", StartGameReset, false);
+        }
+
+        // your X's Turn Start area: just changes the message
+        function writeX() {
+            message.innerText = "You will Find O on the 6th Card/Square!";
+        }
+
+        if (cardClick) {
+            cardClick.addEventListener("click", function () {
+                writeX();
+            });
+        }
+    };
+
+    // called when a board square (card_0 ... card_8) is clicked
+    function onCardClick(event) {
+        const message = document.getElementById("x-turn");
+        const card = event.currentTarget;
+        const index = parseInt(card.dataset.index, 10);
+
+        // if game is already over, ignore clicks
+        if (isGameOver()) return;
+
+        // if this square is already filled, ignore click
+        if (board[index] !== "") return;
+
+        // place current player's mark in board and on the square
+        board[index] = currentPlayer;
+        card.textContent = currentPlayer;
+
+        // check for a win
+        if (checkWin(currentPlayer)) {
+            alert("Congratulations! " + currentPlayer + " Wins!");
+            message.innerText = currentPlayer + " Wins! Click Start / Restart Game to play again.";
+            return;
+        }
+
+        // check for a tie
+        if (isTie()) {
+            alert("It's a Tie! You Both Win?...hug it out!");
+            message.innerText = "It's a Tie! Click Start / Restart Game to play again.";
+            return;
+        }
+
+        // no win, no tie: switch players and continue
+        currentPlayer = (currentPlayer === "X") ? "O" : "X";
+        message.innerText = currentPlayer + " Turn";
+    }
+
+    // check if given player has any winning line
+    function checkWin(player) {
+        return winConditions.some(line =>
+            line.every(index => board[index] === player)
+        );
+    }
+
+    // helper: is the board full?
+    function isBoardFull() {
+        return board.every(cell => cell !== "");
+    }
+
+    // tie = board is full and no winner
+    function isTie() {
+        return isBoardFull() && !checkWin("X") && !checkWin("O");
+    }
+
+    // game over = someone has won, or it's a tie
+    function isGameOver() {
+        return checkWin("X") || checkWin("O") || isTie();
+    }
+
+    // This function is called when the Start / Restart Game button is clicked
+    function StartGameReset() {
+        const message = document.getElementById("x-turn");
+        const allCards = document.querySelectorAll(".box");
+
+        // reset board array
+        board = Array(NUM_SQUARES).fill("");
+
+        // clear all squares visually
+        allCards.forEach(card => {
+            card.textContent = "";
+        });
+
+        // optionally randomize who starts each time
+        if (Math.random() < 0.5) {
+            currentPlayer = "X";
+        } else {
+            currentPlayer = "O";
+        }
+
+        message.innerText = currentPlayer + " Turn to start";
+    }
+</script>
+</body>
+
+</html>
