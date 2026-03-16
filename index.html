@@ -1,255 +1,131 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8" />
-    <title>Joe's Hotdog Stand</title>
+    <meta charset="UTF-8">
+    <title>Document</title>
     <style>
-        /* Page basics */
         body {
-            margin: 0;
-            padding: 0;
+            font-size: medium;
             font-family: Verdana, Geneva, Tahoma, sans-serif;
-            background: linear-gradient(135deg, #f8d5ff, #9bbfee);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        /* Main card container */
-        .app {
-            background: #ffffff;
-            max-width: 400px;
-            width: 90%;
-            border-radius: 18px;
-            padding: 24px 28px 28px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
             text-align: center;
-        }
-
-        .app h1 {
-            margin-top: 0;
-            font-size: 1.5rem;
-            color: #333;
-        }
-
-        .app p.subtitle {
-            margin-top: 4px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        /* Menu area */
-        .menu-row {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 16px;
+            align-items: center;
         }
-
-        label {
-            font-size: 0.9rem;
-            color: #444;
-            text-align: left;
-        }
-
-        select {
+        .joe {
+            border: 1px solid #89cefcd4 ;
+            background-color:#9bbfeed4;
+            color: black;
+            max-width: 250px;
             width: 100%;
-            padding: 10px 12px;
-            border-radius: 10px;
-            border: 1px solid #9bbfee;
-            font-size: 0.95rem;
-            background-color: #f9fbff;
-            outline: none;
-        }
-
-        select:focus {
-            border-color: #f59cdf;
-            box-shadow: 0 0 0 2px rgba(245, 156, 223, 0.3);
-        }
-
-        /* Buttons */
-        .btn {
+            border-radius: 20%;
+            text-align: center;
             display: inline-block;
-            padding: 10px 20px;
-            border-radius: 999px;
+        }
+        .checkout {
+            background-color:rgb(248, 213, 255);
             border: none;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-            margin: 4px;
+            color:black;
+            padding: 15px 32px;
+            border-radius: 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
         }
-
-        .btn-primary {
+         .checkout:hover {
             background-color: #f59cdf;
-            color: #222;
-            box-shadow: 0 4px 10px rgba(245, 156, 223, 0.5);
+            color: black;
         }
-
-        .btn-primary:hover {
-            background-color: #f14fcb;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 14px rgba(241, 79, 203, 0.5);
-        }
-
-        .btn-secondary {
-            background-color: #9bbfee;
-            color: #222;
-            box-shadow: 0 4px 10px rgba(155, 191, 238, 0.5);
-        }
-
-        .btn-secondary:hover {
-            background-color: #6f9ae0;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 14px rgba(111, 154, 224, 0.5);
-        }
-
-        /* Cart area */
-        .cart {
-            margin-top: 16px;
-            padding: 14px 12px;
-            border-radius: 12px;
-            border: 1px solid #e1e7ff;
-            background-color: #f9fbff;
-            text-align: left;
-            font-size: 0.9rem;
-            min-height: 60px;
-        }
-
-        .cart-title {
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #333;
-        }
-
-        .cart-empty {
-            color: #999;
-            font-style: italic;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 4px;
-        }
-
-        .cart-item span.name {
-            font-weight: 500;
-        }
-
-        .cart-item span.qty {
-            color: #555;
+         .cart {
+            border: 1px solid #9bbfeed4;
+            color: black;
+            max-width: 250px;
+            width: 100%;
+            border-radius: 20%;
+            text-align: center;
+            display: inline-block;
         }
     </style>
+
 </head>
+
 <body>
-    <div class="app">
-        <h1>Joe's Hotdog Stand</h1>
-        <p class="subtitle">Build your order and checkout when you're ready.</p>
-
-        <div class="menu-row">
-            <label for="menu">Choose an item:</label>
-            <select id="menu"></select>
-        </div>
-
-        <div>
-            <button id="addToCart" class="btn btn-primary">Add to Cart</button>
-            <button id="checkout" class="btn btn-secondary">Checkout</button>
-        </div>
-
-        <div id="shoppingCart" class="cart">
-            <div class="cart-title">Shopping Cart</div>
-            <div class="cart-empty">Your cart is empty.</div>
-        </div>
-    </div>
-
     <script>
         const Joes = {
             hotdog: 4,
             fries: 3.50,
             soda: 1.50,
             sauerkraut: 1
+
         };
+        //displays hotdog,fries,soda,sauerkraut    
+        document.write(Object.keys(Joes));
+        //insert line break  between each item in the menu
+        document.write("<br>");
 
-        // Build the <select> options dynamically
-        const menuSelect = document.getElementById('menu');
-        for (const key in Joes) {
-            const option = document.createElement('option');
-            option.value = key; // use the name as value, easier for our cart
-            option.textContent = `${key} ($${Joes[key].toFixed(2)})`;
-            menuSelect.appendChild(option);
-        }
-
-        // Initialize cart as an object instead of array for clarity
-        const cart = {
-            hotdog: 0,
-            fries: 0,
-            soda: 0,
-            sauerkraut: 0
-        };
-
-        const cartDiv = document.getElementById('shoppingCart');
-
-        function renderCart() {
-            let hasItems = false;
-            let html = `<div class="cart-title">Shopping Cart</div>`;
-
+        //Output:  Menu: Joe's hotdog $4 - Menu: Joe's fries $3.5 - Menu: Joe's soda $1.5 - Menu: Joe's sauerkraut $1 - 
+        for (const key in Joes) { document.write("Menu: Joe's " + key + " $" + Joes[key] + " - "); }
+        //1. <select> field in which each item is a menu item name and the options values are the price of the item.  Create this element from the array or object structure you select – DO NOT hard code it.
+        document.write("<br>");
+        document.write("<select id='menu'>");
+        for (const key in Joes) { document.write("<option value='" + Joes[key] + "'>" + key + "</option>"); }
+        document.write("</select>");
+        //2.	Create a button below the <select> element labelled “Add to Cart”
+        document.write("<br>");
+        document.write("<button id='addToCart'>Add to Cart</button>");
+        //3.	Add a <div> below the button which will define an area for a “Shopping Cart” – ie the list of items added to the cart
+        document.write("<br>");
+        document.write("<div id='shoppingCart'></div>");
+        //4.	Add an additional button below the Shopping Cart labelled “Checkout”
+        document.write("<br>");
+        document.write("<button id='checkout'>Checkout</button>");
+        //part 5. Choose one construct: an associative array, object or class to store quantity of each item ordered.  Initialize all array items with quantity of 0.
+        const cart = [];
+        cart["hotdog"] = 0;
+        cart["fries"] = 0;
+        cart["soda"] = 0;
+        cart["sauerkraut"] = 0;
+        //The user will choose an item from the <select> element and then click the “Add to Cart” button.  Add one to the quantity for the selected item.
+        document.getElementById("addToCart").addEventListener("click", function () {
+            const selectedItem = document.getElementById("menu").value;
+            const selectedItemName = document.getElementById("menu").options[document.getElementById("menu").selectedIndex].text;
+            cart[selectedItemName] += 1;
+            //Display all items with quantity greater than 0 in the cart area (with the current quantity)
+            let cartContent = "Shopping Cart:<br>";
             for (const item in cart) {
                 if (cart[item] > 0) {
-                    hasItems = true;
-                    html += `
-                        <div class="cart-item">
-                            <span class="name">${item}</span>
-                            <span class="qty">x ${cart[item]}</span>
-                        </div>
-                    `;
+                    cartContent += item + ": " + cart[item] + "<br>";
                 }
             }
-
-            if (!hasItems) {
-                html += `<div class="cart-empty">Your cart is empty.</div>`;
-            }
-
-            cartDiv.innerHTML = html;
-        }
-
-        document.getElementById("addToCart").addEventListener("click", function () {
-            const selectedItemKey = menuSelect.value;
-            cart[selectedItemKey] += 1;
-            renderCart();
+            document.getElementById("shoppingCart").innerHTML = cartContent;
         });
-
+        //When the user clicks the “Checkout” button, the final cost of all items should be tallied and a popup (alert) should display the quantity and total cost for each item that was purchased as well as the total for the order.  
         document.getElementById("checkout").addEventListener("click", function () {
             let totalCost = 0;
-            let checkoutContent = "Checkout Summary:\n\n";
-
+            let checkoutContent = "Checkout Summary:\n";
             for (const item in cart) {
                 if (cart[item] > 0) {
                     const itemCost = cart[item] * Joes[item];
                     totalCost += itemCost;
-                    checkoutContent += `${item}: ${cart[item]} x $${Joes[item].toFixed(2)} = $${itemCost.toFixed(2)}\n`;
+                    checkoutContent += item + ": " + cart[item] + " x $" + Joes[item] + " = $" + itemCost.toFixed(2) + "\n";
                 }
             }
-
-            if (totalCost === 0) {
-                alert("Your cart is empty.");
-                return;
-            }
-
-            checkoutContent += `\nTotal Cost: $${totalCost.toFixed(2)}`;
+            checkoutContent += "Total Cost: $" + totalCost.toFixed(2);
             alert(checkoutContent);
-
-            // Clear cart
+        });
+        //Finally, the cart should be cleared and all quantities returned to 0.
+        document.getElementById("checkout").addEventListener("click", function () {
             for (const item in cart) {
                 cart[item] = 0;
             }
-            renderCart();
+            document.getElementById("shoppingCart").innerHTML = "Shopping Cart:<br>";
         });
 
-        // Initial render
-        renderCart();
     </script>
+
 </body>
+
+
 </html>
