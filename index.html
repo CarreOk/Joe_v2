@@ -16,9 +16,10 @@ sauerkraut: 1
 };
  //displays hotdog,fries,soda,sauerkraut    
 document.write(Object.keys(Joes));
-    
+  document.write("<br>");
+  
 //Output:  Menu: Joe's hotdog $4 - Menu: Joe's fries $3.5 - Menu: Joe's soda $1.5 - Menu: Joe's sauerkraut $1 - 
-//for (const key in Joes) { document.write("Menu: Joe's " + key + " $" + Joes[key] + " - ");}   
+for (const key in Joes) { document.write("Menu: Joe's " + key + " $" + Joes[key] + " - ");}   
 </script>
 <div id="menu"></div>
 
